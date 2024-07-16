@@ -1,0 +1,77 @@
+# 应用服务 WEB 访问端口
+server:
+  port: 8080
+  servlet:
+    context-path: /check
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  datasource:
+    url: jdbc:mariadb://192.168.18.225:3306/check?characterEncoding=utf-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
+    username: admin
+    password: admin
+    driver-class-name: org.mariadb.jdbc.Driver
+    #引入自定义的Druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #初始化时建立物理连接的个数
+      initial-size: 5
+      #最小连接池数量
+      min-idle: 5
+      #最大连接池数量 maxIdle已经不再使用
+      max-active: 20
+      #获取连接时最大等待时间，单位毫秒
+      max-wait: 60000
+      #申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      #既作为检测的间隔时间又作为testWhileIdel执行的依据
+      time-between-eviction-runs-millis: 60000
+      #销毁线程时检测当前连接的最后活动时间和当前时间差大于该值时，关闭当前连接
+      min-evictable-idle-time-millis: 30000
+      #用来检测连接是否有效的sql 必须是一个查询语句
+      #mysql中为 select 'x'
+      #oracle中为 select 1 from dual
+      validation-query: select 'x'
+      #申请连接时会执行validationQuery检测连接是否有效,开启会降低性能,默认为true
+      test-on-borrow: false
+      #归还连接时会执行validationQuery检测连接是否有效,开启会降低性能,默认为true
+      test-on-return: false
+      #是否缓存preparedStatement,mysql5.5+建议开启
+      pool-prepared-statements: true
+      #当值大于0时poolPreparedStatements会自动修改为true
+      max-pool-prepared-statement-per-connection-size: 20
+  application:
+    name: check-yml
+#        redis:
+#            database: 0
+#            host: 127.0.0.1
+#            port: 6379
+#            password: ENC(PE6LYDW9vhTJVK5t5R/Zog==)
+#            timeout: 3000
+#            lettuce:
+#                pool:
+#                    max-active: 20
+#                    max-idle: 10
+#                    min-idle: 0
+#                shutdown-timeout: 1000
+mybatis-plus:
+  configuration:
+    #设置日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启驼峰
+    map-underscore-to-camel-case: true
+    #mappeing文件地址
+    #mapper-locations: classpath*:mappeing/*.xml
+    #实体扫描，多个package用逗号或者分号分隔
+    #typeAliasesPackage: com.example.bgproject.entity.po
+
+logging:
+  level:
+    root: INFO
+    com.muxingzhe.check: DEBUG
+
+config:
+  token:
+    instructions: 00001
+    timeout: 10
